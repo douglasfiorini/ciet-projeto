@@ -2,6 +2,7 @@ package ceit.projeto.dominio;
 
 import java.util.Set;
 
+
 public class Carga {
     
     private Veiculo veiculo;
