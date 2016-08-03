@@ -1,40 +1,59 @@
 package ceit.projeto.business;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
-public class StepGenerator {
+import ceit.projeto.dominio.Pacote;
+
+public class StepGenerator implements IStepGenerator{
+	private static final String ZONA_ABASTECIMENTO = "Zona de abastecimento";
+	private static final String ZONA_TRANSFERENCIA = "Zona de transferência";
+	private static final String VEICULO = "Veículo";
 	
-	// Método que realiza (imprime) o movimento
-	// de um disco entre dois pinos
-	private static void mover(int O, int D) {
-		System.out.println(O + " -> " + D);
+	private List<PassoVO> passos = new ArrayList<PassoVO>();
+	
+	/**
+	 * Push specific step to list
+	 * @param origin
+	 * @param end
+	 */
+	private void pushStep(Pacote prevPackage, String origin, String end) {
+		System.out.println(origin + " -> " + end);
+		passos.add(new PassoVO(prevPackage.getId(), origin, end));
 	}
 
-	// Método que implementa a recursão
-	// O = pino origem
-	// D = pino destino
-	// T = pino de trabalho
-	static void hanoi(int n, int O, int D, int T) {
-
-		if (n > 0) {
-			hanoi(n - 1, O, T, D);
-			mover(O, D);
-			hanoi(n - 1, T, D, O);
+	/**
+	 * Recursive method responsible for creating steps list
+	 * @param origin
+	 * @param end
+	 * @param transfer
+	 */
+	private void generateSteps(Stack<Pacote> productsStack, Pacote prevPackage, String origin, String end, String transfer) {
+		if(productsStack == null){
+			
 		}
-
+		
+		if(productsStack.size() == 0){	
+		
+		}
+		
+		if (productsStack.size() > 0) {
+			generateSteps(productsStack, productsStack.pop(), origin, transfer, end);
+			pushStep(prevPackage, origin, end);
+			generateSteps(productsStack, productsStack.pop(), transfer, end, origin);
+		}
 	}
-
-	// executando o hanoi
-	public static void main(String[] args) {
-
-		int n; // número de discos
-
-		// recebe o número de discos digitado pelo usuário
-		Scanner entrada = new Scanner(System.in);
-		System.out.println("Digite o número de discos: ");
-		n = entrada.nextInt();
-
-		// executa o hanoi!
-//		TorresDeHanoi.hanoi(n, 1, 3, 2);
+	
+	public List<PassoVO> generateStep(List<Pacote> pacotes){
+		Stack<Pacote> productsStack = new Stack<Pacote>();
+		Collections.reverse(pacotes);
+		productsStack.addAll(pacotes);
+		generateSteps(productsStack, null, ZONA_ABASTECIMENTO, ZONA_TRANSFERENCIA, VEICULO);
+		
+		return passos;
 	}
 	
 
