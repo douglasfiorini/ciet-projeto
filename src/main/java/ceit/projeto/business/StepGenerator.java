@@ -1,26 +1,40 @@
 package ceit.projeto.business;
+import java.util.List;
 import java.util.Scanner;
 
-public class StepGenerator {
+import ceit.projeto.dominio.Pacote;
+
+public class StepGenerator implements IStepGenerator{
 	
-	// Método que realiza (imprime) o movimento
-	// de um disco entre dois pinos
-	private static void mover(int O, int D) {
-		System.out.println(O + " -> " + D);
+	/**
+	 * Push specific step to list
+	 * @param origin
+	 * @param end
+	 */
+	private static void pushStep(String origin, String end) {
+		System.out.println(origin + " -> " + end);
 	}
 
-	// Método que implementa a recursão
-	// O = pino origem
-	// D = pino destino
-	// T = pino de trabalho
-	static void hanoi(int n, int O, int D, int T) {
+	/**
+	 * Recursive method responsible for creating steps list
+	 * @param origin
+	 * @param middle
+	 * @param end
+	 */
+	private void generateSteps(int n, String origin, String middle, String end) {
 
 		if (n > 0) {
-			hanoi(n - 1, O, T, D);
-			mover(O, D);
-			hanoi(n - 1, T, D, O);
+			generateSteps(n - 1, origin, end, middle);
+			pushStep(origin, middle);
+			generateSteps(n - 1, end, middle, origin);
 		}
 
+	}
+	
+	public List<PassoVO> generateStep(List<Pacote> pacotes){
+		
+		
+		return null;
 	}
 
 	// executando o hanoi
