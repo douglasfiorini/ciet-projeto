@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ApiController {
-
+	
+	/**
+	 * Comentário
+	 */
 	@RequestMapping("/ola")
 	public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return "Ola";
